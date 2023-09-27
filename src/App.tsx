@@ -9,37 +9,44 @@ type Document = {
 
 const App = () => {
     const [documents, setDocuments] = React.useState<Array<Document>>([]);
+    const [filesInError, setFilesInError] = React.useState<Array<string>>([]);
+
     const { getRootProps, getInputProps } = useDropzone({
         accept: { 'application/pdf': ['.pdf'] },
         onDrop: async (acceptedFiles) => {
+            setFilesInError([]);
             setDocuments([]);
             acceptedFiles.forEach(async (file) => {
-                const fileName = file.name;
-                await convertPdfFileToImages(file, (imageData) => {
-                    setDocuments((prevDocuments) => {
-                        const documentIndex = prevDocuments.findIndex((document) => document.name === fileName);
-                        if (documentIndex === -1) {
-                            return [
-                                ...prevDocuments,
-                                {
-                                    name: fileName,
-                                    pagesAsImageData: [imageData],
-                                },
-                            ];
-                        } else {
-                            const currentDocument = prevDocuments[documentIndex];
-                            const updatedDocuments = [
-                                ...prevDocuments.slice(0, documentIndex),
-                                {
-                                    ...currentDocument,
-                                    pagesAsImageData: [...currentDocument.pagesAsImageData, imageData],
-                                },
-                                ...prevDocuments.slice(documentIndex + 1),
-                            ];
-                            return updatedDocuments;
-                        }
+                try {
+                    const fileName = file.name;
+                    await convertPdfFileToImages(file, (imageData) => {
+                        setDocuments((prevDocuments) => {
+                            const documentIndex = prevDocuments.findIndex((document) => document.name === fileName);
+                            if (documentIndex === -1) {
+                                return [
+                                    ...prevDocuments,
+                                    {
+                                        name: fileName,
+                                        pagesAsImageData: [imageData],
+                                    },
+                                ];
+                            } else {
+                                const currentDocument = prevDocuments[documentIndex];
+                                const updatedDocuments = [
+                                    ...prevDocuments.slice(0, documentIndex),
+                                    {
+                                        ...currentDocument,
+                                        pagesAsImageData: [...currentDocument.pagesAsImageData, imageData],
+                                    },
+                                    ...prevDocuments.slice(documentIndex + 1),
+                                ];
+                                return updatedDocuments;
+                            }
+                        });
                     });
-                });
+                } catch (error) {
+                    setFilesInError((prevFilesInError) => [...prevFilesInError, file.name]);
+                }
             });
         },
     });
@@ -51,6 +58,7 @@ const App = () => {
                 <label htmlFor="pdf-files">Drag and drop some PDF files or browse</label>
                 <input id="pdf-files" {...getInputProps()} />
             </div>
+            {filesInError.length > 0 && <p role="alert">{`Cannot convert ${filesInError.join(',')}`}</p>}
             {documents.map((document, index) => (
                 <section key={index}>
                     <h2>{document.name}</h2>
