@@ -53,7 +53,7 @@ const App = () => {
 
     return (
         <main>
-            <h1>PDF to Images</h1>
+            <h1 className="text-red-800">PDF to Images</h1>
             <div {...getRootProps()} style={{ border: '1px solid black', padding: '20px' }}>
                 <label htmlFor="pdf-files">Drag and drop some PDF files or browse</label>
                 <input id="pdf-files" {...getInputProps()} />
