@@ -52,28 +52,35 @@ const App = () => {
     });
 
     return (
-        <main>
-            <h1 className="text-red-800">PDF to Images</h1>
-            <div {...getRootProps()} style={{ border: '1px solid black', padding: '20px' }}>
-                <label htmlFor="pdf-files">Drag and drop some PDF files or browse</label>
+        <main className="max-w-7xl mx-auto px-5 font-sans">
+            <h1 className="text-blue-800 text-5xl font-bold my-20 text-center">PDF to Images</h1>
+            <div
+                {...getRootProps()}
+                className="border-gray-300 border border-dashed rounded-2xl p-12 max-w-lg mx-auto mb-20"
+            >
+                <label htmlFor="pdf-files" className="text-xl font-bold text-black flex justify-center">
+                    Drag and drop some PDF files or&nbsp;<span className="text-blue-800">browse</span>
+                </label>
                 <input id="pdf-files" {...getInputProps()} />
             </div>
             {filesInError.length > 0 && <p role="alert">{`Cannot convert ${filesInError.join(',')}`}</p>}
-            {documents.map((document, index) => (
-                <section key={index}>
-                    <h2>{document.name}</h2>
-                    <div>
-                        {document.pagesAsImageData.map((image, index) => (
-                            <img
-                                key={index}
-                                src={image}
-                                width={300}
-                                alt={`File ${document.name} - Page ${index + 1}`}
-                            />
-                        ))}
-                    </div>
-                </section>
-            ))}
+            <div className="flex flex-col gap-20 pb-20">
+                {documents.map((document, index) => (
+                    <section key={index}>
+                        <h2 className="text-xl font-semibold text-black mb-6">{document.name}</h2>
+                        <div className="grid grid-cols-[repeat(auto-fill,_400px)] gap-5">
+                            {document.pagesAsImageData.map((image, index) => (
+                                <img
+                                    key={index}
+                                    src={image}
+                                    className="block shadow-md"
+                                    alt={`File ${document.name} - Page ${index + 1}`}
+                                />
+                            ))}
+                        </div>
+                    </section>
+                ))}
+            </div>
         </main>
     );
 };
