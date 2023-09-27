@@ -1,0 +1,6 @@
+canvas {
+    width: 100%;
+    height: auto;
+    transform: scale(1);
+    transform-origin: 0 0;
+}
