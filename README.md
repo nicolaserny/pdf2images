@@ -1,13 +1,14 @@
 # PDF2Images
 
 Small project to preview PDF files as images.
+You can test it [here](https://rad-klepon-373c44.netlify.app/).
 
 ## Requirements
 
 -   Node 18
 -   Yarn
 
-## development
+## Development
 
 First, install the dependencies:
 
