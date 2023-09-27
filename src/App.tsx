@@ -1,6 +1,8 @@
 import React from 'react';
 import { useDropzone } from 'react-dropzone';
 import { convertPdfFileToImages } from './utils/converter';
+import { usePreviewModal } from './hooks/usePreviewModal';
+import PreviewModal from './components/PreviewModal';
 
 type Document = {
     name: string;
@@ -10,6 +12,7 @@ type Document = {
 const App = () => {
     const [documents, setDocuments] = React.useState<Array<Document>>([]);
     const [filesInError, setFilesInError] = React.useState<Array<string>>([]);
+    const { show, getPreviewModalProps } = usePreviewModal();
 
     const { getRootProps, getInputProps } = useDropzone({
         accept: { 'application/pdf': ['.pdf'] },
@@ -70,17 +73,20 @@ const App = () => {
                         <h2 className="text-xl font-semibold text-black mb-6">{document.name}</h2>
                         <div className="grid grid-cols-[repeat(auto-fill,_400px)] gap-5">
                             {document.pagesAsImageData.map((image, index) => (
-                                <img
-                                    key={index}
-                                    src={image}
-                                    className="block shadow-md"
-                                    alt={`File ${document.name} - Page ${index + 1}`}
-                                />
+                                <button onClick={() => show(image)} className="cursor-pointer">
+                                    <img
+                                        key={index}
+                                        src={image}
+                                        className="block shadow-md"
+                                        alt={`File ${document.name} - Page ${index + 1}`}
+                                    />
+                                </button>
                             ))}
                         </div>
                     </section>
                 ))}
             </div>
+            <PreviewModal {...getPreviewModalProps()} />
         </main>
     );
 };
