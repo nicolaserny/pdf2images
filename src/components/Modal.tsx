@@ -38,7 +38,7 @@ function Modal({ children, isOpen, onClose, initialFocus }: ModalProps) {
                             <Dialog.Panel
                                 as="section"
                                 aria-label="modal"
-                                className="min-w-[500px] transform rounded-md bg-white p-4 text-left align-middle shadow-xl transition-all"
+                                className="my-4 w-4/5 transform rounded-md bg-white p-4 text-left align-middle shadow-xl transition-all"
                             >
                                 {children}
                             </Dialog.Panel>
