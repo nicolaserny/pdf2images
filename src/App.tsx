@@ -57,7 +57,7 @@ const App = () => {
                 {...getRootProps()}
                 className="mx-auto mb-20 max-w-lg cursor-pointer rounded-2xl border border-dashed border-gray-300 p-12"
             >
-                <label htmlFor="pdf-files" className="flex justify-center text-xl font-bold text-black">
+                <label htmlFor="pdf-files" className="flex cursor-pointer justify-center text-xl font-bold text-black">
                     Drag and drop some PDF files or&nbsp;<span className="text-blue-800">browse</span>
                 </label>
                 <input id="pdf-files" {...getInputProps()} />
@@ -69,13 +69,13 @@ const App = () => {
                 >{`Cannot convert ${filesInError.join(',')}`}</p>
             )}
             <div className="flex flex-col gap-20 pb-20">
-                {documents.map((document, index) => {
-                    const description = `File ${document.name} - Page ${index + 1}`;
-                    return (
-                        <section key={index}>
-                            <h2 className="mb-6 text-xl font-semibold text-black">{document.name}</h2>
-                            <div className="grid grid-cols-[repeat(auto-fill,_400px)] gap-5">
-                                {document.pagesAsImageData.map((image, index) => (
+                {documents.map((document, index) => (
+                    <section key={index}>
+                        <h2 className="mb-6 text-xl font-semibold text-black">{document.name}</h2>
+                        <div className="grid grid-cols-[repeat(auto-fill,_400px)] gap-5">
+                            {document.pagesAsImageData.map((image, index) => {
+                                const description = `File ${document.name} - Page ${index + 1}`;
+                                return (
                                     <button
                                         key={index}
                                         onClick={() => show({ description, dataUrl: image })}
@@ -83,11 +83,11 @@ const App = () => {
                                     >
                                         <img src={image} className="block shadow-md" alt={description} />
                                     </button>
-                                ))}
-                            </div>
-                        </section>
-                    );
-                })}
+                                );
+                            })}
+                        </div>
+                    </section>
+                ))}
             </div>
             <PreviewModal {...getPreviewModalProps()} />
         </main>
