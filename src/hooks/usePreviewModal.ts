@@ -1,11 +1,12 @@
 import React from 'react';
+import { Image } from '../model';
 
 export const usePreviewModal = () => {
     const [isOpen, setIsOpen] = React.useState(false);
-    const [previewImageUrl, setPreviewImageUrl] = React.useState<string | undefined>(undefined);
+    const [image, setImage] = React.useState<Image | undefined>(undefined);
 
-    const show = React.useCallback((imageUrl: string) => {
-        setPreviewImageUrl(imageUrl);
+    const show = React.useCallback((image: Image) => {
+        setImage(image);
         setIsOpen(true);
     }, []);
     const close = React.useCallback(() => setIsOpen(false), []);
@@ -13,7 +14,7 @@ export const usePreviewModal = () => {
     const getPreviewModalProps = () => ({
         isOpen,
         onClose: close,
-        imageUrl: previewImageUrl,
+        image,
     });
 
     return {

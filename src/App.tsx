@@ -3,11 +3,7 @@ import { useDropzone } from 'react-dropzone';
 import { convertPdfFileToImages } from './utils/converter';
 import { usePreviewModal } from './hooks/usePreviewModal';
 import PreviewModal from './components/PreviewModal';
-
-type Document = {
-    name: string;
-    pagesAsImageData: Array<string>;
-};
+import { Document } from './model';
 
 const App = () => {
     const [documents, setDocuments] = React.useState<Array<Document>>([]);
@@ -59,32 +55,39 @@ const App = () => {
             <h1 className="text-blue-800 text-5xl font-bold my-20 text-center">PDF to Images</h1>
             <div
                 {...getRootProps()}
-                className="border-gray-300 border border-dashed rounded-2xl p-12 max-w-lg mx-auto mb-20"
+                className="border-gray-300 border border-dashed rounded-2xl p-12 max-w-lg mx-auto mb-20 cursor-pointer"
             >
                 <label htmlFor="pdf-files" className="text-xl font-bold text-black flex justify-center">
                     Drag and drop some PDF files or&nbsp;<span className="text-blue-800">browse</span>
                 </label>
                 <input id="pdf-files" {...getInputProps()} />
             </div>
-            {filesInError.length > 0 && <p role="alert">{`Cannot convert ${filesInError.join(',')}`}</p>}
+            {filesInError.length > 0 && (
+                <p
+                    role="alert"
+                    className="bg-red-50 text-red-800 rounded-lg p-2 w-fit border border-solid border-red-800 mb-6"
+                >{`Cannot convert ${filesInError.join(',')}`}</p>
+            )}
             <div className="flex flex-col gap-20 pb-20">
-                {documents.map((document, index) => (
-                    <section key={index}>
-                        <h2 className="text-xl font-semibold text-black mb-6">{document.name}</h2>
-                        <div className="grid grid-cols-[repeat(auto-fill,_400px)] gap-5">
-                            {document.pagesAsImageData.map((image, index) => (
-                                <button onClick={() => show(image)} className="cursor-pointer">
-                                    <img
+                {documents.map((document, index) => {
+                    const description = `File ${document.name} - Page ${index + 1}`;
+                    return (
+                        <section key={index}>
+                            <h2 className="text-xl font-semibold text-black mb-6">{document.name}</h2>
+                            <div className="grid grid-cols-[repeat(auto-fill,_400px)] gap-5">
+                                {document.pagesAsImageData.map((image, index) => (
+                                    <button
                                         key={index}
-                                        src={image}
-                                        className="block shadow-md"
-                                        alt={`File ${document.name} - Page ${index + 1}`}
-                                    />
-                                </button>
-                            ))}
-                        </div>
-                    </section>
-                ))}
+                                        onClick={() => show({ description, dataUrl: image })}
+                                        className="cursor-pointer"
+                                    >
+                                        <img src={image} className="block shadow-md" alt={description} />
+                                    </button>
+                                ))}
+                            </div>
+                        </section>
+                    );
+                })}
             </div>
             <PreviewModal {...getPreviewModalProps()} />
         </main>

@@ -1,23 +1,24 @@
+import { Image } from '../model';
 import Modal from './Modal';
 
 type PreviewModalProps = {
     onClose: () => void;
     isOpen: boolean;
-    imageUrl?: string;
+    image?: Image;
 };
 
-function PreviewModal({ onClose, imageUrl, ...props }: PreviewModalProps) {
+function PreviewModal({ onClose, image, ...props }: PreviewModalProps) {
     return (
         <Modal {...props} onClose={onClose}>
-            <PreviewContent onClose={onClose} imageUrl={imageUrl} />
+            <PreviewContent onClose={onClose} image={image} />
         </Modal>
     );
 }
 
-function PreviewContent({ imageUrl }: Pick<PreviewModalProps, 'onClose' | 'imageUrl'>) {
+function PreviewContent({ image }: Pick<PreviewModalProps, 'onClose' | 'image'>) {
     return (
         <div className="xc-mt-3">
-            <img src={imageUrl} className="block shadow-md" alt="" />
+            <img src={image?.dataUrl} className="block shadow-md" alt={image?.dataUrl} />
         </div>
     );
 }
