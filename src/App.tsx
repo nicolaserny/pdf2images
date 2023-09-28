@@ -51,13 +51,13 @@ const App = () => {
     });
 
     return (
-        <main className="max-w-7xl mx-auto px-5 font-sans">
-            <h1 className="text-blue-800 text-5xl font-bold my-20 text-center">PDF to Images</h1>
+        <main className="mx-auto max-w-7xl px-5 font-sans">
+            <h1 className="my-20 text-center text-5xl font-bold text-blue-800">PDF to Images</h1>
             <div
                 {...getRootProps()}
-                className="border-gray-300 border border-dashed rounded-2xl p-12 max-w-lg mx-auto mb-20 cursor-pointer"
+                className="mx-auto mb-20 max-w-lg cursor-pointer rounded-2xl border border-dashed border-gray-300 p-12"
             >
-                <label htmlFor="pdf-files" className="text-xl font-bold text-black flex justify-center">
+                <label htmlFor="pdf-files" className="flex justify-center text-xl font-bold text-black">
                     Drag and drop some PDF files or&nbsp;<span className="text-blue-800">browse</span>
                 </label>
                 <input id="pdf-files" {...getInputProps()} />
@@ -65,7 +65,7 @@ const App = () => {
             {filesInError.length > 0 && (
                 <p
                     role="alert"
-                    className="bg-red-50 text-red-800 rounded-lg p-2 w-fit border border-solid border-red-800 mb-6"
+                    className="mb-6 w-fit rounded-lg border border-solid border-red-800 bg-red-50 p-2 text-red-800"
                 >{`Cannot convert ${filesInError.join(',')}`}</p>
             )}
             <div className="flex flex-col gap-20 pb-20">
@@ -73,7 +73,7 @@ const App = () => {
                     const description = `File ${document.name} - Page ${index + 1}`;
                     return (
                         <section key={index}>
-                            <h2 className="text-xl font-semibold text-black mb-6">{document.name}</h2>
+                            <h2 className="mb-6 text-xl font-semibold text-black">{document.name}</h2>
                             <div className="grid grid-cols-[repeat(auto-fill,_400px)] gap-5">
                                 {document.pagesAsImageData.map((image, index) => (
                                     <button
